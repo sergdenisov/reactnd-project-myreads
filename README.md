@@ -33,7 +33,7 @@ Remember that good React design practice is to create new JS files for each comp
 
 ## Backend Server
 
-To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
+To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/utils/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
 
 ### `getAll()`
 * Returns a Promise which resolves to a JSON object containing a collection of book objects.
