@@ -3,11 +3,7 @@ import React from 'react';
 const Book = (props) => (
   <div className="book">
     <div className="book-top">
-      <div className="book-cover" style={{
-        width: props.width,
-        height: props.height,
-        backgroundImage: `url(${props.imageUrl})`
-      }}/>
+      <img src={props.imageUrl} className="book-cover" alt={props.title}/>
       <div className="book-shelf-changer">
         <select>
           <option value="none" disabled>Move to...</option>
