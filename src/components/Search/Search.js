@@ -42,7 +42,8 @@ class Search extends Component {
                 <Book
                   imageUrl={book.imageLinks.thumbnail}
                   title={book.title}
-                  authors={book.authors && book.authors.join(', ')}/>
+                  authors={book.authors && book.authors.join(', ')}
+                  shelf={book.shelf}/>
               </li>
             ))}
           </ol>
