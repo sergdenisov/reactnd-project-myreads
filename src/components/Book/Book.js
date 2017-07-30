@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
 
 const bookShelfTitles = BookShelfTitles.getAll();
 
-const Book = (props) => (
-  <div className="book">
-    <div className="book-top">
-      <img src={props.imageUrl} className="book-cover" alt={props.title}/>
-      <div className="book-shelf-changer">
-        <select>
-          <option value="none" disabled>Move to...</option>
-          {Object.keys(bookShelfTitles).map((key) => (
-            <option value={key}>{bookShelfTitles[key]}</option>
-          ))}
-        </select>
+class Book extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { shelf: props.shelf };
+  }
+
+  render() {
+    const { imageUrl, title, authors } = this.props;
+
+    return (
+      <div className="book">
+        <div className="book-top">
+          <img src={imageUrl} className="book-cover" alt={title}/>
+          <div className="book-shelf-changer">
+            <select value={this.state.shelf}>
+              <option disabled>Move to...</option>
+              {Object.entries(bookShelfTitles).map(([key, value]) => (
+                <option value={key} key={key}>{value}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="book-title">{title}</div>
+        {authors && <div className="book-authors">{authors}</div>}
       </div>
-    </div>
-    <div className="book-title">{props.title}</div>
-    {props.authors && (
-      <div className="book-authors">{props.authors}</div>
-    )}
-  </div>
-);
+    )
+  }
+}
 
 export default Book;
