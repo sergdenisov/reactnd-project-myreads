@@ -15,7 +15,9 @@ const Book = (props) => (
       </div>
     </div>
     <div className="book-title">{props.title}</div>
-    <div className="book-authors">{props.authors}</div>
+    {props.authors && (
+      <div className="book-authors">{props.authors}</div>
+    )}
   </div>
 );
 
