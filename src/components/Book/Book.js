@@ -1,4 +1,7 @@
 import React from 'react';
+import * as BookShelfTitles from '../../utils/BookShelfTitles';
+
+const bookShelfTitles = BookShelfTitles.getAll();
 
 const Book = (props) => (
   <div className="book">
@@ -7,10 +10,9 @@ const Book = (props) => (
       <div className="book-shelf-changer">
         <select>
           <option value="none" disabled>Move to...</option>
-          <option value="currentlyReading">Currently Reading</option>
-          <option value="wantToRead">Want to Read</option>
-          <option value="read">Read</option>
-          <option value="none">None</option>
+          {Object.keys(bookShelfTitles).map((key) => (
+            <option value={key}>{bookShelfTitles[key]}</option>
+          ))}
         </select>
       </div>
     </div>
