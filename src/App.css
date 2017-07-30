@@ -10,18 +10,18 @@ body, .app {
 
 /* main page */
 
-.list-books-title {
+.books-list-title {
   padding: 10px 0;
   background: #2e7c31;
   text-align: center;
 }
-.list-books-title h1 {
+.books-list-title h1 {
   font-weight: 400;
   margin: 0;
   color: white;
 }
 
-.list-books-content {
+.books-list-content {
   padding: 0 0 80px;
   flex: 1;
 }
