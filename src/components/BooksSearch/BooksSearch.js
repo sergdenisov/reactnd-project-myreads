@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
 import BooksGrid from '../BooksGrid/BooksGrid';
 
-class Search extends Component {
+class BooksSearch extends Component {
   state = {
     query: '',
     books: []
@@ -43,8 +43,8 @@ class Search extends Component {
   };
 }
 
-Search.defaultProps = {
+BooksSearch.defaultProps = {
   maxSearchResults: 20
 };
 
-export default Search;
+export default BooksSearch;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './utils/BooksAPI';
-import Search from './components/Search/Search'
+import BooksSearch from './components/BooksSearch/BooksSearch'
 import BooksList from './components/BooksList/BooksList'
 import './App.css'
 import clone from 'clone'
@@ -59,7 +59,7 @@ class BooksApp extends Component {
         <Route exact path="/" render={() => (
           <BooksList booksByShelves={this.state.booksByShelves} onBookshelfChange={this.handleBookshelfChange}/>
         )}/>
-        <Route path="/search" render={() => <Search onBookshelfChange={this.handleBookshelfChange}/>}/>
+        <Route path="/search" render={() => <BooksSearch onBookshelfChange={this.handleBookshelfChange}/>}/>
       </div>
     )
   }
