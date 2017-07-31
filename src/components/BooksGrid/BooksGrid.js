@@ -1,7 +1,7 @@
 import React from 'react';
 import Book from '../Book/Book'
 
-const BooksGrid = (props) => (
+const BooksGrid = (props) => props.books.length > 0 ? (
   <ol className="books-grid">
     {props.books.map((book) => (
       <li key={book.id}>
@@ -9,6 +9,8 @@ const BooksGrid = (props) => (
       </li>
     ))}
   </ol>
+) : (
+  <div className="books-grid">{props.emptyDataText}</div>
 );
 
 export default BooksGrid;

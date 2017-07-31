@@ -1,27 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
+import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
 
 class BooksSearch extends Component {
   state = {
     query: '',
-    books: []
+    books: [],
+    isLoading: false
   };
 
   search = (query) => {
+    this.setState({isLoading: true});
+
     const trimmedQuery = query.trim();
 
     BooksAPI.search(query, this.props.maxSearchResults).then((books) => {
       this.setState({
         query: trimmedQuery,
-        books
+        books,
+        isLoading: false
       });
     });
   };
 
   render() {
-    const { query, books } = this.state;
+    const { query, books, isLoading } = this.state;
 
     return (
       <div className="search-books">
@@ -36,7 +41,14 @@ class BooksSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <BooksGrid books={books} onBookshelfChange={this.props.onBookshelfChange}/>
+          {isLoading ? (
+            <Spinner/>
+          ) : (
+            <BooksGrid
+              books={books}
+              onBookshelfChange={this.props.onBookshelfChange}
+              emptyDataText={query && 'Sorry, no matches found for your query.'}/>
+          )}
         </div>
       </div>
     )
