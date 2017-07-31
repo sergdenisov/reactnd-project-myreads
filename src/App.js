@@ -31,23 +31,25 @@ class BooksApp extends Component {
   }
 
   handleBookshelfChange = (book, prevShelf, newShelf) => {
-    this.setState((prevState) => {
-      const newState = clone(prevState);
-      const newBooksByShelves = newState.booksByShelves;
+    BooksAPI.update(book, newShelf).then(() => {
+      this.setState((prevState) => {
+        const newState = clone(prevState);
+        const newBooksByShelves = newState.booksByShelves;
 
-      if (prevShelf !== 'none') {
-        const booksOnShelf = newBooksByShelves.get(prevShelf).filter((b) => b.id !== book.id);
-        newBooksByShelves.set(prevShelf, booksOnShelf);
-      }
+        if (prevShelf !== 'none') {
+          const booksOnShelf = newBooksByShelves.get(prevShelf).filter((b) => b.id !== book.id);
+          newBooksByShelves.set(prevShelf, booksOnShelf);
+        }
 
-      if (newShelf !== 'none') {
-        const booksOnShelf = newBooksByShelves.get(newShelf) || [];
-        newBooksByShelves.set(newShelf, booksOnShelf.concat([book]));
-      }
+        if (newShelf !== 'none') {
+          const booksOnShelf = newBooksByShelves.get(newShelf) || [];
+          newBooksByShelves.set(newShelf, booksOnShelf.concat([book]));
+        }
 
-      book.shelf = newShelf;
+        book.shelf = newShelf;
 
-      return newState;
+        return newState;
+      });
     });
   };
 
