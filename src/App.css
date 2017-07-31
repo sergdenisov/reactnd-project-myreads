@@ -101,6 +101,11 @@ body, .app {
 
 .search-books-results {
   padding: 80px 10px 20px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* books grid */
@@ -109,7 +114,6 @@ body, .app {
   list-style-type: none;
   padding: 0;
   margin: 0;
-
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
