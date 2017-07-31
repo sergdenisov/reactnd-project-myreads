@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
-import Book from '../Book/Book';
+import BooksGrid from '../BooksGrid/BooksGrid';
 
 class Search extends Component {
   state = {
@@ -36,13 +36,7 @@ class Search extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {books.length > 0 && books.map((book) => (
-              <li key={book.id}>
-                <Book book={book} onBookshelfChange={this.props.onBookshelfChange}/>
-              </li>
-            ))}
-          </ol>
+          <BooksGrid books={books} onBookshelfChange={this.props.onBookshelfChange}/>
         </div>
       </div>
     )
