@@ -9,7 +9,7 @@ const BooksList = (props) => (
     </div>
     <div className="books-list-content">
       {Array.from(props.booksByShelves).map(([key, value]) => (
-        <Bookshelf shelf={key} books={value} key={key}/>
+        <Bookshelf shelf={key} books={value} onBookshelfChange={props.onBookshelfChange} key={key}/>
       ))}
     </div>
     <div className="open-search">

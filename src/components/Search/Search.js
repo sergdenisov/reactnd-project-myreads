@@ -39,11 +39,7 @@ class Search extends Component {
           <ol className="books-grid">
             {books.length > 0 && books.map((book) => (
               <li key={book.id}>
-                <Book
-                  imageUrl={book.imageLinks.thumbnail}
-                  title={book.title}
-                  authors={book.authors && book.authors.join(', ')}
-                  shelf={book.shelf}/>
+                <Book book={book} onBookshelfChange={this.props.onBookshelfChange}/>
               </li>
             ))}
           </ol>

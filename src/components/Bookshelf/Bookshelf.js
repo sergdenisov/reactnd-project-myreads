@@ -9,11 +9,7 @@ const Bookshelf = (props) => props.books.length > 0 && (
       <ol className="books-grid">
         {props.books.map((book) => (
           <li key={book.id}>
-            <Book
-              imageUrl={book.imageLinks.thumbnail}
-              title={book.title}
-              authors={book.authors && book.authors.join(', ')}
-              shelf={book.shelf}/>
+            <Book book={book} onBookshelfChange={props.onBookshelfChange}/>
           </li>
         ))}
       </ol>
