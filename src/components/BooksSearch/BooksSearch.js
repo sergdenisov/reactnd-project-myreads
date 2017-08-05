@@ -4,6 +4,7 @@ import * as BooksAPI from '../../utils/BooksAPI';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
 import debounce from 'debounce';
+import './BooksSearch.css';
 
 const initialState = {
   query: '',

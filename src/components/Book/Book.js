@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
+import './Book.css';
 
 const bookShelfTitles = BookShelfTitles.getAll();
 

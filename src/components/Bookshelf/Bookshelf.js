@@ -1,6 +1,7 @@
 import React from 'react';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import BooksGrid from '../BooksGrid/BooksGrid';
+import './Bookshelf.css';
 
 const Bookshelf = (props) => props.books.length > 0 && (
   <div className="bookshelf">
