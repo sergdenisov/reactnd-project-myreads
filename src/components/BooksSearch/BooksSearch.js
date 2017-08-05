@@ -51,17 +51,18 @@ class BooksSearch extends Component {
 
     return (
       <div className="search-books">
-        <div className="search-books-bar">
-          <Link to='/' className="close-search">Close</Link>
-          <div className="search-books-input-wrapper">
+        <div className="books-search__bar">
+          <Link to='/' className="books-search__button">Close</Link>
+          <div className="books-search__input-wrapper">
             <input
               type="text"
               placeholder="Search by title or author"
               value={query}
-              onChange={this.handleChange}/>
+              onChange={this.handleChange}
+              className="books-search__input"/>
           </div>
         </div>
-        <div className="search-books-results">
+        <div className="books-search__results">
           {isLoading ? (
             <Spinner/>
           ) : (
