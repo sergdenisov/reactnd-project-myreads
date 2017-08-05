@@ -6,10 +6,14 @@
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  position: relative;
   animation: load 1.3s infinite linear;
   transform: translateZ(0);
 }
+
+  .spinner_small {
+    font-size: 5px;
+    margin: 17px auto;
+  }
 
 @keyframes load {
   0%,
