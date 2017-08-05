@@ -5,8 +5,8 @@ import './Bookshelf.css';
 
 const Bookshelf = (props) => props.books.length > 0 && (
   <div className="bookshelf">
-    <h2 className="bookshelf-title">{BookShelfTitles.get(props.shelf)}</h2>
-    <div className="bookshelf-books">
+    <h2 className="bookshelf__title">{BookShelfTitles.get(props.shelf)}</h2>
+    <div className="bookshelf__books">
       <BooksGrid books={props.books} onBookshelfChange={props.onBookshelfChange}/>
     </div>
   </div>

@@ -6,7 +6,8 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-.books-grid li {
-  padding: 10px 15px;
-  text-align: left;
-}
+
+  .books-grid__item {
+    padding: 10px 15px;
+    text-align: left;
+  }

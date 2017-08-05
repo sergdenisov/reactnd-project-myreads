@@ -5,7 +5,7 @@ import './BooksGrid.css';
 const BooksGrid = (props) => props.books.length > 0 ? (
   <ol className="books-grid">
     {props.books.map((book) => (
-      <li key={book.id}>
+      <li className="books-grid__item" key={book.id}>
         <Book book={book}
               onBookshelfChange={props.onBookshelfChange}
               shouldUpdateAfterChanging={props.shouldUpdateBookAfterChanging}/>

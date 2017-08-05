@@ -29,13 +29,13 @@ class Book extends Component {
 
     return (
       <div className={classnames('book', {'book_updating': isUpdating})}>
-        <div className="book-top">
-          <img src={imageLinks.thumbnail} className="book-cover" alt={title}/>
-          <div className="book-shelf-changer">
+        <div className="book__top">
+          <img src={imageLinks.thumbnail} className="book__cover" alt={title}/>
+          <div className="book__shelf-changer">
             { isUpdating ? (
               <Spinner small={true}/>
             ) : (
-              <select value={shelf} onChange={(event) => {
+              <select value={shelf} className="book__select" onChange={(event) => {
                 this.handleBookshelfChange(this.props.book, shelf, event.target.value)
               }}>
                 <option disabled>Move to...</option>
@@ -46,8 +46,8 @@ class Book extends Component {
             )}
           </div>
         </div>
-        <div className="book-title">{title}</div>
-        {authors && <div className="book-authors">{authors.join(', ')}</div>}
+        <div className="book__title">{title}</div>
+        {authors && <div className="book__authors">{authors.join(', ')}</div>}
       </div>
     )
   }

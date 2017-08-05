@@ -7,11 +7,9 @@ import './BooksList.css'
 
 const BooksList = (props) => (
   <div className="books-list">
-    <div className="books-list-title">
-      <h1>MyReads</h1>
-    </div>
+    <h1 className="books-list__title">MyReads</h1>
     {props.isLoading ? (
-      <div className={classnames('books-list-content', {'books-list-content_loading': props.isLoading})}>
+      <div className={classnames('books-list__content', {'books-list__content_loading': props.isLoading})}>
         <Spinner/>
       </div>
     ) : (
@@ -19,8 +17,8 @@ const BooksList = (props) => (
         <Bookshelf shelf={shelf} books={books} onBookshelfChange={props.onBookshelfChange} key={shelf}/>
       ))
     )}
-    <div className="open-search">
-      <Link to='/search'>Add a book</Link>
+    <div className="books-list__search">
+      <Link to='/search' className="books-list__button">Add a book</Link>
     </div>
   </div>
 );
