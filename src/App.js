@@ -16,7 +16,7 @@ const initialState = {
 class BooksApp extends Component {
   constructor(props) {
     super(props);
-    this.state = clone(initialState);
+    this.state = initialState;
   }
 
   componentDidMount() {
