@@ -1,5 +1,6 @@
 import React from 'react';
-import Book from '../Book/Book'
+import Book from '../Book/Book';
+import './BooksGrid.css';
 
 const BooksGrid = (props) => props.books.length > 0 ? (
   <ol className="books-grid">

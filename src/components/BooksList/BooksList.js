@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Bookshelf from '../Bookshelf/Bookshelf';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
+import './BooksList.css'
 
 const BooksList = (props) => (
   <div className="books-list">
