@@ -3,26 +3,46 @@ import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
+import debounce from 'debounce';
+
+const initialState = {
+  query: '',
+  books: [],
+  isLoading: false
+};
 
 class BooksSearch extends Component {
-  state = {
-    query: '',
-    books: [],
-    isLoading: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
 
-  search = (query) => {
-    this.setState({isLoading: true});
+  reset() {
+    this.setState(initialState);
+    this.search.clear();
+  }
 
-    const trimmedQuery = query.trim();
-
+  search = debounce((query) => {
     BooksAPI.search(query, this.props.maxSearchResults).then((books) => {
       this.setState({
-        query: trimmedQuery,
+        query: query,
         books,
         isLoading: false
       });
     });
+  }, this.props.searchTimeout);
+
+  handleChange = (event) => {
+    const query = event.target.value.trim();
+
+    this.setState({query: query});
+
+    if (query) {
+      this.setState({isLoading: true});
+      this.search(query);
+    } else {
+      this.reset();
+    }
   };
 
   render() {
@@ -37,7 +57,7 @@ class BooksSearch extends Component {
               type="text"
               placeholder="Search by title or author"
               value={query}
-              onChange={(event) => this.search(event.target.value)}/>
+              onChange={this.handleChange}/>
           </div>
         </div>
         <div className="search-books-results">
@@ -56,7 +76,8 @@ class BooksSearch extends Component {
 }
 
 BooksSearch.defaultProps = {
-  maxSearchResults: 20
+  maxSearchResults: 20,
+  searchTimeout: 1000
 };
 
 export default BooksSearch;
