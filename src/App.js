@@ -10,7 +10,8 @@ import clone from 'clone'
 const emptyShelf = BookShelfTitles.getEmpty();
 
 const initialState = {
-  booksByShelves: new Map(BookShelfTitles.getAll(true).map(([shelf, title]) => [shelf, []]))
+  booksByShelves: new Map(BookShelfTitles.getAll(true).map(([shelf, title]) => [shelf, []])),
+  isLoading: false
 };
 
 class BooksApp extends Component {
@@ -20,11 +21,15 @@ class BooksApp extends Component {
   }
 
   componentDidMount() {
+    this.setState({isLoading: true});
+
     BooksAPI.getAll().then((books) => {
       this.setState((prevState) => {
         const newState = clone(prevState);
 
         books.forEach((book) => { newState.booksByShelves.get(book.shelf).push(book) });
+
+        newState.isLoading = false;
 
         return newState;
       });
@@ -58,7 +63,10 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <BooksList booksByShelves={this.state.booksByShelves} onBookshelfChange={this.handleBookshelfChange}/>
+          <BooksList
+            booksByShelves={this.state.booksByShelves}
+            onBookshelfChange={this.handleBookshelfChange}
+            isLoading={this.state.isLoading}/>
         )}/>
         <Route path="/search" render={() => <BooksSearch onBookshelfChange={this.handleBookshelfChange}/>}/>
       </div>

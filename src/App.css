@@ -24,7 +24,14 @@ body, .app {
 .books-list-content {
   padding: 0 0 80px;
   flex: 1;
+  box-sizing: border-box;
+  min-height: calc(100vh - 68px);
 }
+
+  .books-list-content_loading {
+    display: flex;
+    align-items: center;
+  }
 
 .bookshelf {
   padding: 0 10px 20px;
