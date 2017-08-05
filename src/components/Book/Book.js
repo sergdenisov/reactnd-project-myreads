@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import Spinner from '../Spinner/Spinner';
+import classnames from 'classnames';
 
 const bookShelfTitles = BookShelfTitles.getAll();
 
@@ -26,7 +27,7 @@ class Book extends Component {
     const { isUpdating } = this.state;
 
     return (
-      <div className={`book ${isUpdating && 'book_updating'}`}>
+      <div className={classnames('book', {'book_updating': isUpdating})}>
         <div className="book-top">
           <img src={imageLinks.thumbnail} className="book-cover" alt={title}/>
           <div className="book-shelf-changer">
