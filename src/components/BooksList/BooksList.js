@@ -8,8 +8,8 @@ const BooksList = (props) => (
       <h1>MyReads</h1>
     </div>
     <div className="books-list-content">
-      {Array.from(props.booksByShelves).map(([key, value]) => (
-        <Bookshelf shelf={key} books={value} onBookshelfChange={props.onBookshelfChange} key={key}/>
+      {Array.from(props.booksByShelves).map(([shelf, books]) => (
+        <Bookshelf shelf={shelf} books={books} onBookshelfChange={props.onBookshelfChange} key={shelf}/>
       ))}
     </div>
     <div className="open-search">
