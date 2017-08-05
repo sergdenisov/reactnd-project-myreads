@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import * as BooksAPI from './utils/BooksAPI';
-import * as BookShelfTitles from './utils/BookShelfTitles'
-import BooksSearch from './components/BooksSearch/BooksSearch'
-import BooksList from './components/BooksList/BooksList'
+import * as BooksAPI from '../../utils/BooksAPI';
+import * as BookShelfTitles from '../../utils/BookShelfTitles'
+import BooksSearch from '../BooksSearch/BooksSearch'
+import BooksList from '../BooksList/BooksList'
 import './App.css'
 import clone from 'clone'
 
