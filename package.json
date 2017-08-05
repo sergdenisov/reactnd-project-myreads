@@ -16,5 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "license": "UNLICENSED",
+  "repository": "https://github.com/sergdenisov/reactnd-project-myreads-starter"
 }
