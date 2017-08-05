@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './utils/BooksAPI';
+import * as BookShelfTitles from './utils/BookShelfTitles'
 import BooksSearch from './components/BooksSearch/BooksSearch'
 import BooksList from './components/BooksList/BooksList'
 import './App.css'
 import clone from 'clone'
 
+const emptyShelf = BookShelfTitles.getEmpty();
+
 const initialState = {
-  booksByShelves: new Map()
+  booksByShelves: new Map(BookShelfTitles.getAll(true).map(([shelf, title]) => [shelf, []]))
 };
 
 class BooksApp extends Component {
@@ -18,15 +21,13 @@ class BooksApp extends Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      const booksByShelves = new Map();
+      this.setState((prevState) => {
+        const newState = clone(prevState);
 
-      books.forEach((book) => {
-        const booksOnShelf = booksByShelves.get(book.shelf) || [];
-        booksOnShelf.push(book);
-        booksByShelves.set(book.shelf, booksOnShelf);
+        books.forEach((book) => { newState.booksByShelves.get(book.shelf).push(book) });
+
+        return newState;
       });
-
-      this.setState({ booksByShelves });
     });
   }
 
@@ -36,12 +37,12 @@ class BooksApp extends Component {
         const newState = clone(prevState);
         const newBooksByShelves = newState.booksByShelves;
 
-        if (prevShelf !== 'none') {
+        if (prevShelf !== emptyShelf) {
           const booksOnShelf = newBooksByShelves.get(prevShelf).filter((b) => b.id !== book.id);
           newBooksByShelves.set(prevShelf, booksOnShelf);
         }
 
-        if (newShelf !== 'none') {
+        if (newShelf !== emptyShelf) {
           const booksOnShelf = newBooksByShelves.get(newShelf) || [];
           newBooksByShelves.set(newShelf, booksOnShelf.concat([book]));
         }

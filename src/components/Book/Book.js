@@ -18,8 +18,8 @@ class Book extends Component {
           <div className="book-shelf-changer">
             <select value={shelf} onChange={(event) => this.handleBookshelfChange(this.props.book, shelf, event.target.value)}>
               <option disabled>Move to...</option>
-              {Object.entries(bookShelfTitles).map(([key, value]) => (
-                <option value={key} key={key}>{value}</option>
+              {bookShelfTitles.map(([shelf, title]) => (
+                <option value={shelf} key={shelf}>{title}</option>
               ))}
             </select>
           </div>
