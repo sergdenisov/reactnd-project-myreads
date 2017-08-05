@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from '../Bookshelf/Bookshelf';
 import Spinner from '../Spinner/Spinner';
+import classnames from 'classnames';
 
 const BooksList = (props) => (
   <div className="books-list">
@@ -9,7 +10,7 @@ const BooksList = (props) => (
       <h1>MyReads</h1>
     </div>
     {props.isLoading ? (
-      <div className={`books-list-content ${props.isLoading && 'books-list-content_loading'}`}>
+      <div className={classnames('books-list-content', {'books-list-content_loading': props.isLoading})}>
         <Spinner/>
       </div>
     ) : (
