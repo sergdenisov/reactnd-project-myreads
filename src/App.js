@@ -36,7 +36,7 @@ class BooksApp extends Component {
     });
   }
 
-  handleBookshelfChange = (book, prevShelf, newShelf) => {
+  handleBookshelfChange = (book, prevShelf, newShelf) =>
     BooksAPI.update(book, newShelf).then(() => {
       this.setState((prevState) => {
         const newState = clone(prevState);
@@ -57,7 +57,6 @@ class BooksApp extends Component {
         return newState;
       });
     });
-  };
 
   render() {
     return (

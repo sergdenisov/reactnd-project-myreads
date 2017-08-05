@@ -67,6 +67,7 @@ class BooksSearch extends Component {
             <BooksGrid
               books={books}
               onBookshelfChange={this.props.onBookshelfChange}
+              shouldUpdateBookAfterChanging={true}
               emptyDataText={query && 'Sorry, no matches found for your query.'}/>
           )}
         </div>

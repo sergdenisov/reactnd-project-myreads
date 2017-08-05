@@ -132,7 +132,13 @@ body, .app {
 
 .book {
   width: 140px;
+  position: relative;
 }
+
+  .book_updating {
+    opacity: 0.5;
+  }
+
 .book-title,
 .book-authors {
   font-size: 0.8em;
