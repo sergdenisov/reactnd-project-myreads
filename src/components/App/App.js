@@ -5,6 +5,7 @@ import * as BooksAPI from '../../utils/BooksAPI';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import BooksSearch from '../BooksSearch/BooksSearch';
 import BooksList from '../BooksList/BooksList';
+import Error from '../Error/Error';
 import './App.css';
 
 const emptyShelf = BookShelfTitles.getEmpty();
@@ -13,9 +14,16 @@ class BooksApp extends Component {
   state = {
     booksByShelves: new Map(BookShelfTitles.getAll(true).map(([shelf]) => [shelf, []])),
     isLoading: true,
+    isError: false,
   };
 
   componentDidMount() {
+    this.getAllBooks();
+  }
+
+  getAllBooks = () => {
+    this.setState({ isLoading: true, isError: false });
+
     BooksAPI.getAll().then((books) => {
       this.setState((prevState) => {
         const newState = clone(prevState);
@@ -26,7 +34,14 @@ class BooksApp extends Component {
 
         return newState;
       });
-    });
+    }, this.handleError.bind(this, this.getAllBooks));
+  };
+
+  tryAgain = () => {};
+
+  handleError(tryAgainHandler) {
+    this.tryAgain = tryAgainHandler;
+    this.setState({ isLoading: false, isError: true });
   }
 
   handleBookshelfChange = (book, prevShelf, newShelf) =>
@@ -53,6 +68,8 @@ class BooksApp extends Component {
     });
 
   render() {
+    const { booksByShelves, isLoading, isError } = this.state;
+
     return (
       <div className="app">
         <Route
@@ -60,13 +77,14 @@ class BooksApp extends Component {
           path="/"
           render={() => (
             <BooksList
-              booksByShelves={this.state.booksByShelves}
+              booksByShelves={booksByShelves}
               onBookshelfChange={this.handleBookshelfChange}
-              isLoading={this.state.isLoading}
+              isLoading={isLoading}
             />
             )}
         />
         <Route path="/search" render={() => <BooksSearch onBookshelfChange={this.handleBookshelfChange} />} />
+        { isError && <Error onClick={this.tryAgain} /> }
       </div>
     );
   }
