@@ -5,12 +5,14 @@ import debounce from 'debounce';
 import * as BooksAPI from '../../utils/BooksAPI';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
+import Error from '../Error/Error';
 import './BooksSearch.css';
 
 const initialState = {
   query: '',
   books: [],
   isLoading: false,
+  isError: false,
 };
 
 class BooksSearch extends Component {
@@ -27,34 +29,42 @@ class BooksSearch extends Component {
 
   reset() {
     this.setState(initialState);
-    this.search.clear();
+    this.searchWithDebounce.clear();
   }
 
-  search = debounce((query) => {
+  search(query) {
     BooksAPI.search(query, this.props.maxSearchResults).then((books) => {
       this.setState({
         query,
-        books,
+        books: (Array.isArray(books) && books) || [],
         isLoading: false,
+        isError: false,
       });
+    }, () => {
+      this.tryAgain = this.search.bind(this, query);
+      this.setState({ isLoading: false, isError: true });
     });
-  }, this.props.searchTimeout);
+  }
+
+  searchWithDebounce = debounce(this.search, this.props.searchTimeout);
 
   handleChange = (event) => {
     const query = event.target.value.trim();
 
-    this.setState({ query });
+    this.setState({ query, isError: false });
 
     if (query) {
       this.setState({ isLoading: true });
-      this.search(query);
+      this.searchWithDebounce(query);
     } else {
       this.reset();
     }
   };
 
+  tryAgain = () => {};
+
   render() {
-    const { query, books, isLoading } = this.state;
+    const { query, books, isLoading, isError } = this.state;
 
     return (
       <div className="search-books">
@@ -73,7 +83,7 @@ class BooksSearch extends Component {
         <div className="books-search__results">
           {isLoading ? (
             <Spinner />
-          ) : (
+          ) : !isError && (
             <BooksGrid
               books={books}
               onBookshelfChange={this.props.onBookshelfChange}
@@ -82,6 +92,7 @@ class BooksSearch extends Component {
             />
           )}
         </div>
+        { isError && <Error onClick={this.tryAgain} /> }
       </div>
     );
   }
