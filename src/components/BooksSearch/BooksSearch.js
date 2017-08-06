@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import debounce from 'debounce';
 import * as BooksAPI from '../../utils/BooksAPI';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
-import debounce from 'debounce';
 import './BooksSearch.css';
 
 const initialState = {
   query: '',
   books: [],
-  isLoading: false
+  isLoading: false,
 };
 
 class BooksSearch extends Component {
+  static propTypes = {
+    maxSearchResults: PropTypes.number.isRequired,
+    searchTimeout: PropTypes.number.isRequired,
+    onBookshelfChange: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -26,9 +33,9 @@ class BooksSearch extends Component {
   search = debounce((query) => {
     BooksAPI.search(query, this.props.maxSearchResults).then((books) => {
       this.setState({
-        query: query,
+        query,
         books,
-        isLoading: false
+        isLoading: false,
       });
     });
   }, this.props.searchTimeout);
@@ -36,10 +43,10 @@ class BooksSearch extends Component {
   handleChange = (event) => {
     const query = event.target.value.trim();
 
-    this.setState({query: query});
+    this.setState({ query });
 
     if (query) {
-      this.setState({isLoading: true});
+      this.setState({ isLoading: true });
       this.search(query);
     } else {
       this.reset();
@@ -52,35 +59,37 @@ class BooksSearch extends Component {
     return (
       <div className="search-books">
         <div className="books-search__bar">
-          <Link to='/' className="books-search__button">Close</Link>
+          <Link to="/" className="books-search__button">Close</Link>
           <div className="books-search__input-wrapper">
             <input
               type="text"
               placeholder="Search by title or author"
               value={query}
               onChange={this.handleChange}
-              className="books-search__input"/>
+              className="books-search__input"
+            />
           </div>
         </div>
         <div className="books-search__results">
           {isLoading ? (
-            <Spinner/>
+            <Spinner />
           ) : (
             <BooksGrid
               books={books}
               onBookshelfChange={this.props.onBookshelfChange}
-              shouldUpdateBookAfterChanging={true}
-              emptyDataText={query && 'Sorry, no matches found for your query.'}/>
+              shouldUpdateBookAfterChanging
+              emptyDataText={query && 'Sorry, no matches found for your query.'}
+            />
           )}
         </div>
       </div>
-    )
-  };
+    );
+  }
 }
 
 BooksSearch.defaultProps = {
   maxSearchResults: 20,
-  searchTimeout: 1000
+  searchTimeout: 1000,
 };
 
 export default BooksSearch;

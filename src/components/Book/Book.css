@@ -31,7 +31,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #60ac5d url('arrow-drop-down.svg') center no-repeat;
+    background: #60ac5d url(arrow-drop-down.svg) center no-repeat;
     background-size: 20px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
