@@ -44,12 +44,13 @@ class BooksApp extends Component {
     this.setState({ isLoading: false, isError: true });
   }
 
-  handleBookshelfChange = (book, prevShelf, newShelf) =>
-    BooksAPI.update(book, newShelf).then(() => {
+  updateBookshelf(book, prevShelf, newShelf) {
+    this.setState({ isError: false });
+
+    return BooksAPI.update(book, newShelf).then(() => {
       this.setState((prevState) => {
         const newState = clone(prevState);
         const newBooksByShelves = newState.booksByShelves;
-        const movedBook = clone(book);
 
         if (prevShelf !== emptyShelf) {
           const booksOnShelf = newBooksByShelves.get(prevShelf).filter(b => b.id !== book.id);
@@ -58,14 +59,18 @@ class BooksApp extends Component {
 
         if (newShelf !== emptyShelf) {
           const booksOnShelf = newBooksByShelves.get(newShelf) || [];
-          newBooksByShelves.set(newShelf, booksOnShelf.concat([movedBook]));
+          newBooksByShelves.set(newShelf, booksOnShelf.concat([book]));
         }
 
-        movedBook.shelf = newShelf;
+        book.shelf = newShelf;
 
         return newState;
       });
-    });
+    }, this.handleError.bind(this, this.updateBookshelf.bind(this, book, prevShelf, newShelf)));
+  }
+
+  handleBookshelfChange = (book, prevShelf, newShelf) =>
+    this.updateBookshelf(book, prevShelf, newShelf);
 
   render() {
     const { booksByShelves, isLoading, isError } = this.state;
