@@ -44,26 +44,34 @@ class Book extends Component {
         <div className="book__top">
           <img src={imageLinks.thumbnail} className="book__cover" alt={title} />
           <div className="book__shelf-changer">
-            { isUpdating ? (
-              <Spinner small />
-            ) : (
-              <select
-                value={shelf}
-                className="book__select"
-                onChange={(event) => {
-                  this.handleBookshelfChange(this.props.book, shelf, event.target.value);
-                }}
-              >
-                <option disabled>Move to...</option>
-                {bookShelfTitles.map(([key, value]) => (
-                  <option value={key} key={key}>{value}</option>
-                ))}
-              </select>
-            )}
+            {isUpdating
+              ? <Spinner small />
+              : <select
+                  value={shelf}
+                  className="book__select"
+                  onChange={event => {
+                    this.handleBookshelfChange(
+                      this.props.book,
+                      shelf,
+                      event.target.value,
+                    );
+                  }}>
+                  <option disabled>Move to...</option>
+                  {bookShelfTitles.map(([key, value]) =>
+                    <option value={key} key={key}>
+                      {value}
+                    </option>,
+                  )}
+                </select>}
           </div>
         </div>
-        <div className="book__title">{title}</div>
-        {authors && <div className="book__authors">{authors.join(', ')}</div>}
+        <div className="book__title">
+          {title}
+        </div>
+        {authors &&
+          <div className="book__authors">
+            {authors.join(', ')}
+          </div>}
       </div>
     );
   }
