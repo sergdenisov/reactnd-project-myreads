@@ -9,7 +9,7 @@ import BooksList from '../BooksList/BooksList';
 import Error from '../Error/Error';
 import './App.css';
 
-class BooksApp extends Component {
+class App extends Component {
   state = {
     shelves: BookShelfTitles.getAll(true).map(([shelf]) => shelf),
     books: [],
@@ -95,4 +95,4 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp;
+export default App;
