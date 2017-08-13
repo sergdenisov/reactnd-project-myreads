@@ -4,18 +4,16 @@ import PropTypes from 'prop-types';
 import debounce from 'debounce';
 import * as BooksAPI from '../../utils/BooksAPI';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
+import ComponentStatuses from '../../utils/ComponentStatuses';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
 import Error from '../Error/Error';
 import './BooksSearch.css';
 
-const emptyShelf = BookShelfTitles.getEmpty();
-
 const initialState = {
   query: '',
   books: [],
-  isLoading: false,
-  isError: false,
+  status: ComponentStatuses.Empty,
 };
 
 class BooksSearch extends Component {
@@ -49,7 +47,7 @@ class BooksSearch extends Component {
       });
 
       if (!book.shelf) {
-        book.shelf = emptyShelf;
+        book.shelf = BookShelfTitles.emptyShelf;
       }
 
       return book;
@@ -59,16 +57,20 @@ class BooksSearch extends Component {
   search(query) {
     BooksAPI.search(query, this.props.maxSearchResults).then(
       books => {
+        const verifiedBooks = this.verifyBooks(books);
+
         this.setState({
           query,
-          books: this.verifyBooks(books),
-          isLoading: false,
-          isError: false,
+          books: verifiedBooks,
+          status:
+            verifiedBooks.length > 0
+              ? ComponentStatuses.Ok
+              : ComponentStatuses.Empty,
         });
       },
       () => {
         this.tryAgain = this.search.bind(this, query);
-        this.setState({ isLoading: false, isError: true });
+        this.setState({ status: ComponentStatuses.Error });
       },
     );
   }
@@ -78,10 +80,8 @@ class BooksSearch extends Component {
   handleChange = event => {
     const query = event.target.value.trim();
 
-    this.setState({ query, isError: false });
-
     if (query) {
-      this.setState({ isLoading: true });
+      this.setState({ query, status: ComponentStatuses.Loading });
       this.searchWithDebounce(query);
     } else {
       this.reset();
@@ -91,7 +91,30 @@ class BooksSearch extends Component {
   tryAgain = () => {};
 
   render() {
-    const { query, books, isLoading, isError } = this.state;
+    const { status, books, query } = this.state;
+
+    const getContent = () => {
+      switch (status) {
+        case ComponentStatuses.Loading:
+          return <Spinner />;
+        case ComponentStatuses.Error:
+          return null;
+        case ComponentStatuses.Empty:
+          return (
+            <div>
+              {query && 'Sorry, no matches found for your query.'}
+            </div>
+          );
+        default:
+          return (
+            <BooksGrid
+              books={books}
+              onBookshelfChange={this.props.onBookshelfChange}
+              shouldUpdateBookAfterChanging
+            />
+          );
+      }
+    };
 
     return (
       <div className="search-books">
@@ -110,19 +133,10 @@ class BooksSearch extends Component {
           </div>
         </div>
         <div className="books-search__results">
-          {isLoading
-            ? <Spinner />
-            : !isError &&
-              <BooksGrid
-                books={books}
-                onBookshelfChange={this.props.onBookshelfChange}
-                shouldUpdateBookAfterChanging
-                emptyDataText={
-                  query && 'Sorry, no matches found for your query.'
-                }
-              />}
+          {getContent()}
         </div>
-        {isError && <Error onClick={this.tryAgain} />}
+        {status === ComponentStatuses.Error &&
+          <Error onClick={this.tryAgain} />}
       </div>
     );
   }
