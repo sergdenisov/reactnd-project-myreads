@@ -16,10 +16,10 @@ const BooksList = props =>
           })}>
           <Spinner />
         </div>
-      : Array.from(props.booksByShelves).map(([shelf, books]) =>
+      : props.shelves.map(shelf =>
           <Bookshelf
             shelf={shelf}
-            books={books}
+            books={props.books.filter(book => book.shelf === shelf)}
             onBookshelfChange={props.onBookshelfChange}
             key={shelf}
           />,
@@ -33,7 +33,8 @@ const BooksList = props =>
 
 BooksList.propTypes = {
   isLoading: PropTypes.bool,
-  booksByShelves: PropTypes.instanceOf(Map).isRequired,
+  shelves: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // TODO: books: PropTypes.arrayOf(PropTypes.object).isRequired,
   onBookshelfChange: PropTypes.func.isRequired,
 };
 

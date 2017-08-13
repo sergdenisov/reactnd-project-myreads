@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import debounce from 'debounce';
 import * as BooksAPI from '../../utils/BooksAPI';
+import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import Spinner from '../Spinner/Spinner';
 import BooksGrid from '../BooksGrid/BooksGrid';
 import Error from '../Error/Error';
 import './BooksSearch.css';
+
+const emptyShelf = BookShelfTitles.getEmpty();
 
 const initialState = {
   query: '',
@@ -19,6 +22,7 @@ class BooksSearch extends Component {
   static propTypes = {
     maxSearchResults: PropTypes.number.isRequired,
     searchTimeout: PropTypes.number.isRequired,
+    booksOnShelves: PropTypes.arrayOf(PropTypes.object).isRequired,
     onBookshelfChange: PropTypes.func.isRequired,
   };
 
@@ -32,12 +36,32 @@ class BooksSearch extends Component {
     this.searchWithDebounce.clear();
   }
 
+  verifyBooks(books) {
+    if (!Array.isArray(books)) {
+      return [];
+    }
+
+    return books.map(book => {
+      this.props.booksOnShelves.forEach(bookOnShelf => {
+        if (book.id === bookOnShelf.id) {
+          book.shelf = bookOnShelf.shelf;
+        }
+      });
+
+      if (!book.shelf) {
+        book.shelf = emptyShelf;
+      }
+
+      return book;
+    });
+  }
+
   search(query) {
     BooksAPI.search(query, this.props.maxSearchResults).then(
       books => {
         this.setState({
           query,
-          books: (Array.isArray(books) && books) || [],
+          books: this.verifyBooks(books),
           isLoading: false,
           isError: false,
         });
