@@ -12,7 +12,9 @@ const emptyShelf = BookShelfTitles.getEmpty();
 
 class BooksApp extends Component {
   state = {
-    booksByShelves: new Map(BookShelfTitles.getAll(true).map(([shelf]) => [shelf, []])),
+    booksByShelves: new Map(
+      BookShelfTitles.getAll(true).map(([shelf]) => [shelf, []]),
+    ),
     isLoading: true,
     isError: false,
   };
@@ -24,11 +26,13 @@ class BooksApp extends Component {
   getAllBooks = () => {
     this.setState({ isLoading: true, isError: false });
 
-    BooksAPI.getAll().then((books) => {
-      this.setState((prevState) => {
+    BooksAPI.getAll().then(books => {
+      this.setState(prevState => {
         const newState = clone(prevState);
 
-        books.forEach((book) => { newState.booksByShelves.get(book.shelf).push(book); });
+        books.forEach(book => {
+          newState.booksByShelves.get(book.shelf).push(book);
+        });
 
         newState.isLoading = false;
 
@@ -48,12 +52,14 @@ class BooksApp extends Component {
     this.setState({ isError: false });
 
     return BooksAPI.update(book, newShelf).then(() => {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         const newState = clone(prevState);
         const newBooksByShelves = newState.booksByShelves;
 
         if (prevShelf !== emptyShelf) {
-          const booksOnShelf = newBooksByShelves.get(prevShelf).filter(b => b.id !== book.id);
+          const booksOnShelf = newBooksByShelves
+            .get(prevShelf)
+            .filter(b => b.id !== book.id);
           newBooksByShelves.set(prevShelf, booksOnShelf);
         }
 
@@ -80,16 +86,19 @@ class BooksApp extends Component {
         <Route
           exact
           path="/"
-          render={() => (
+          render={() =>
             <BooksList
               booksByShelves={booksByShelves}
               onBookshelfChange={this.handleBookshelfChange}
               isLoading={isLoading}
-            />
-            )}
+            />}
         />
-        <Route path="/search" render={() => <BooksSearch onBookshelfChange={this.handleBookshelfChange} />} />
-        { isError && <Error onClick={this.tryAgain} /> }
+        <Route
+          path="/search"
+          render={() =>
+            <BooksSearch onBookshelfChange={this.handleBookshelfChange} />}
+        />
+        {isError && <Error onClick={this.tryAgain} />}
       </div>
     );
   }

@@ -11,6 +11,7 @@ export const getEmpty = () => emptyShelf;
 
 export const get = id => TITLES.get(id);
 
-export const getAll = (exceptEmpty = false) => (
-  exceptEmpty ? Array.from(TITLES).filter(([key]) => key !== emptyShelf) : Array.from(TITLES)
-);
+export const getAll = (exceptEmpty = false) =>
+  exceptEmpty
+    ? Array.from(TITLES).filter(([key]) => key !== emptyShelf)
+    : Array.from(TITLES);

@@ -33,22 +33,25 @@ class BooksSearch extends Component {
   }
 
   search(query) {
-    BooksAPI.search(query, this.props.maxSearchResults).then((books) => {
-      this.setState({
-        query,
-        books: (Array.isArray(books) && books) || [],
-        isLoading: false,
-        isError: false,
-      });
-    }, () => {
-      this.tryAgain = this.search.bind(this, query);
-      this.setState({ isLoading: false, isError: true });
-    });
+    BooksAPI.search(query, this.props.maxSearchResults).then(
+      books => {
+        this.setState({
+          query,
+          books: (Array.isArray(books) && books) || [],
+          isLoading: false,
+          isError: false,
+        });
+      },
+      () => {
+        this.tryAgain = this.search.bind(this, query);
+        this.setState({ isLoading: false, isError: true });
+      },
+    );
   }
 
   searchWithDebounce = debounce(this.search, this.props.searchTimeout);
 
-  handleChange = (event) => {
+  handleChange = event => {
     const query = event.target.value.trim();
 
     this.setState({ query, isError: false });
@@ -69,7 +72,9 @@ class BooksSearch extends Component {
     return (
       <div className="search-books">
         <div className="books-search__bar">
-          <Link to="/" className="books-search__button">Close</Link>
+          <Link to="/" className="books-search__button">
+            Close
+          </Link>
           <div className="books-search__input-wrapper">
             <input
               type="text"
@@ -81,18 +86,19 @@ class BooksSearch extends Component {
           </div>
         </div>
         <div className="books-search__results">
-          {isLoading ? (
-            <Spinner />
-          ) : !isError && (
-            <BooksGrid
-              books={books}
-              onBookshelfChange={this.props.onBookshelfChange}
-              shouldUpdateBookAfterChanging
-              emptyDataText={query && 'Sorry, no matches found for your query.'}
-            />
-          )}
+          {isLoading
+            ? <Spinner />
+            : !isError &&
+              <BooksGrid
+                books={books}
+                onBookshelfChange={this.props.onBookshelfChange}
+                shouldUpdateBookAfterChanging
+                emptyDataText={
+                  query && 'Sorry, no matches found for your query.'
+                }
+              />}
         </div>
-        { isError && <Error onClick={this.tryAgain} /> }
+        {isError && <Error onClick={this.tryAgain} />}
       </div>
     );
   }

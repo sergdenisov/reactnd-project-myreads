@@ -5,5 +5,7 @@ global.localStorage = {
 };
 
 global.fetch = jest.fn(
-  url => url.includes('/books') && new Promise(resolve => resolve({ json: () => ({ books: [] }) })),
+  url =>
+    url.includes('/books') &&
+    new Promise(resolve => resolve({ json: () => ({ books: [] }) })),
 );
