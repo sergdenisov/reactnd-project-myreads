@@ -5,7 +5,7 @@ import './Error.css';
 const Error = props =>
   <div className="error">
     <div>
-      Sorry, something went wrong. Please
+      <span>Sorry, something went wrong. Please </span>
       <a
         href=""
         onClick={event => {
@@ -13,7 +13,8 @@ const Error = props =>
           props.onClick();
         }}>
         try again
-      </a>.
+      </a>
+      <span>.</span>
     </div>
   </div>;
 
