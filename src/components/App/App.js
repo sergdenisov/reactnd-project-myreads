@@ -12,9 +12,8 @@ const emptyShelf = BookShelfTitles.getEmpty();
 
 class BooksApp extends Component {
   state = {
-    booksByShelves: new Map(
-      BookShelfTitles.getAll(true).map(([shelf]) => [shelf, []]),
-    ),
+    shelves: BookShelfTitles.getAll(true).map(([shelf]) => shelf),
+    books: [],
     isLoading: true,
     isError: false,
   };
@@ -27,17 +26,7 @@ class BooksApp extends Component {
     this.setState({ isLoading: true, isError: false });
 
     BooksAPI.getAll().then(books => {
-      this.setState(prevState => {
-        const newState = clone(prevState);
-
-        books.forEach(book => {
-          newState.booksByShelves.get(book.shelf).push(book);
-        });
-
-        newState.isLoading = false;
-
-        return newState;
-      });
+      this.setState({ books, isLoading: false });
     }, this.handleError.bind(this, this.getAllBooks));
   };
 
@@ -54,21 +43,16 @@ class BooksApp extends Component {
     return BooksAPI.update(book, newShelf).then(() => {
       this.setState(prevState => {
         const newState = clone(prevState);
-        const newBooksByShelves = newState.booksByShelves;
-
-        if (prevShelf !== emptyShelf) {
-          const booksOnShelf = newBooksByShelves
-            .get(prevShelf)
-            .filter(b => b.id !== book.id);
-          newBooksByShelves.set(prevShelf, booksOnShelf);
-        }
-
-        if (newShelf !== emptyShelf) {
-          const booksOnShelf = newBooksByShelves.get(newShelf) || [];
-          newBooksByShelves.set(newShelf, booksOnShelf.concat([book]));
-        }
 
         book.shelf = newShelf;
+
+        if (prevShelf === emptyShelf) {
+          newState.books.push(book);
+        } else if (newState === emptyShelf) {
+          newState.books = newState.books.filter(b => b.id !== book.id);
+        } else {
+          newState.books.find(b => b.id === book.id).shelf = newShelf;
+        }
 
         return newState;
       });
@@ -79,7 +63,7 @@ class BooksApp extends Component {
     this.updateBookshelf(book, prevShelf, newShelf);
 
   render() {
-    const { booksByShelves, isLoading, isError } = this.state;
+    const { shelves, books, isLoading, isError } = this.state;
 
     return (
       <div className="app">
@@ -88,15 +72,19 @@ class BooksApp extends Component {
           path="/"
           render={() =>
             <BooksList
-              booksByShelves={booksByShelves}
-              onBookshelfChange={this.handleBookshelfChange}
               isLoading={isLoading}
+              shelves={shelves}
+              books={books}
+              onBookshelfChange={this.handleBookshelfChange}
             />}
         />
         <Route
           path="/search"
           render={() =>
-            <BooksSearch onBookshelfChange={this.handleBookshelfChange} />}
+            <BooksSearch
+              booksOnShelves={books}
+              onBookshelfChange={this.handleBookshelfChange}
+            />}
         />
         {isError && <Error onClick={this.tryAgain} />}
       </div>
