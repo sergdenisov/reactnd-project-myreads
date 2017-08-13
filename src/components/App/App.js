@@ -3,19 +3,17 @@ import { Route } from 'react-router-dom';
 import clone from 'clone';
 import * as BooksAPI from '../../utils/BooksAPI';
 import * as BookShelfTitles from '../../utils/BookShelfTitles';
+import ComponentStatuses from '../../utils/ComponentStatuses';
 import BooksSearch from '../BooksSearch/BooksSearch';
 import BooksList from '../BooksList/BooksList';
 import Error from '../Error/Error';
 import './App.css';
 
-const emptyShelf = BookShelfTitles.getEmpty();
-
 class BooksApp extends Component {
   state = {
     shelves: BookShelfTitles.getAll(true).map(([shelf]) => shelf),
     books: [],
-    isLoading: true,
-    isError: false,
+    status: ComponentStatuses.Loading,
   };
 
   componentDidMount() {
@@ -23,10 +21,14 @@ class BooksApp extends Component {
   }
 
   getAllBooks = () => {
-    this.setState({ isLoading: true, isError: false });
+    this.setState({ status: ComponentStatuses.Loading });
 
     BooksAPI.getAll().then(books => {
-      this.setState({ books, isLoading: false });
+      this.setState({
+        books,
+        status:
+          books.length > 0 ? ComponentStatuses.Ok : ComponentStatuses.Empty,
+      });
     }, this.handleError.bind(this, this.getAllBooks));
   };
 
@@ -34,11 +36,11 @@ class BooksApp extends Component {
 
   handleError(tryAgainHandler) {
     this.tryAgain = tryAgainHandler;
-    this.setState({ isLoading: false, isError: true });
+    this.setState({ status: ComponentStatuses.Error });
   }
 
   updateBookshelf(book, prevShelf, newShelf) {
-    this.setState({ isError: false });
+    this.setState({ status: ComponentStatuses.Ok });
 
     return BooksAPI.update(book, newShelf).then(() => {
       this.setState(prevState => {
@@ -46,9 +48,9 @@ class BooksApp extends Component {
 
         book.shelf = newShelf;
 
-        if (prevShelf === emptyShelf) {
+        if (prevShelf === BookShelfTitles.emptyShelf) {
           newState.books.push(book);
-        } else if (newState === emptyShelf) {
+        } else if (newState === BookShelfTitles.emptyShelf) {
           newState.books = newState.books.filter(b => b.id !== book.id);
         } else {
           newState.books.find(b => b.id === book.id).shelf = newShelf;
@@ -63,7 +65,7 @@ class BooksApp extends Component {
     this.updateBookshelf(book, prevShelf, newShelf);
 
   render() {
-    const { shelves, books, isLoading, isError } = this.state;
+    const { shelves, books, status } = this.state;
 
     return (
       <div className="app">
@@ -72,7 +74,7 @@ class BooksApp extends Component {
           path="/"
           render={() =>
             <BooksList
-              isLoading={isLoading}
+              status={status}
               shelves={shelves}
               books={books}
               onBookshelfChange={this.handleBookshelfChange}
@@ -86,7 +88,8 @@ class BooksApp extends Component {
               onBookshelfChange={this.handleBookshelfChange}
             />}
         />
-        {isError && <Error onClick={this.tryAgain} />}
+        {status === ComponentStatuses.Error &&
+          <Error onClick={this.tryAgain} />}
       </div>
     );
   }

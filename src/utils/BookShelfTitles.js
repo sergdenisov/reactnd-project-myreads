@@ -1,5 +1,3 @@
-const emptyShelf = 'none';
-
 const TITLES = new Map([
   ['currentlyReading', 'Currently Reading'],
   ['wantToRead', 'Want to Read'],
@@ -7,7 +5,7 @@ const TITLES = new Map([
   ['none', 'None'],
 ]);
 
-export const getEmpty = () => emptyShelf;
+export const emptyShelf = 'none';
 
 export const get = id => TITLES.get(id);
 
