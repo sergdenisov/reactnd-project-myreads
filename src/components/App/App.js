@@ -9,6 +9,7 @@ import BooksList from '../BooksList/BooksList';
 import Error from '../Error/Error';
 import './App.css';
 
+/** The main app component containing the app state. */
 class App extends Component {
   state = {
     shelves: BookShelfTitles.getAll(true).map(([shelf]) => shelf),

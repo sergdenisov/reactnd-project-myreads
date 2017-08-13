@@ -8,14 +8,22 @@ import './Book.css';
 
 const bookShelfTitles = BookShelfTitles.getAll();
 
+/** The component for the current book. */
 class Book extends Component {
   static propTypes = {
+    /** The bookshelf change event's handler. */
     onBookshelfChange: PropTypes.func.isRequired,
+    /** The flag indicating that the component should be updated after the bookshelf change event triggering. */
     shouldUpdateAfterChanging: PropTypes.bool,
+    /** The book's data. */
     book: PropTypes.shape({
+      /** Links for the book's images. */
       imageLinks: PropTypes.object.isRequired,
+      /** The book's title. */
       title: PropTypes.string.isRequired,
+      /** The book's authors. */
       authors: PropTypes.array,
+      /** The shelf that contains the current book.  */
       shelf: PropTypes.string.isRequired,
     }).isRequired,
   };
