@@ -17,13 +17,17 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "prettier": "^1.5.3",
-    "react-scripts": "1.0.10"
+    "react-docgen": "^2.17.0",
+    "react-scripts": "1.0.10",
+    "react-styleguidist": "^6.0.12"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   },
   "license": "UNLICENSED",
   "repository": "https://github.com/sergdenisov/reactnd-project-myreads"
