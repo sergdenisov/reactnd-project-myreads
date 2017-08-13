@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Error.css';
 
+/** The component for handling an error. */
 const Error = props =>
   <div className="error">
     <div>
@@ -19,6 +20,7 @@ const Error = props =>
   </div>;
 
 Error.propTypes = {
+  /** The click handler. */
   onClick: PropTypes.func.isRequired,
 };
 

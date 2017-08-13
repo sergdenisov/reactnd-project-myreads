@@ -7,6 +7,7 @@ import Bookshelf from '../Bookshelf/Bookshelf';
 import Spinner from '../Spinner/Spinner';
 import './BooksList.css';
 
+/** The component for the list of the shelves with the books. */
 const BooksList = props => {
   const { status, shelves, books, onBookshelfChange } = props;
 
@@ -55,9 +56,13 @@ const BooksList = props => {
 };
 
 BooksList.propTypes = {
+  /** The current status of the component */
   status: PropTypes.oneOf(Object.values(ComponentStatuses)).isRequired,
+  /** The list of the shelves. */
   shelves: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** The list of the books. */
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** The bookshelf change event's handler. */
   onBookshelfChange: PropTypes.func.isRequired,
 };
 
