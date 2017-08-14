@@ -1,8 +1,5 @@
 ```jsx
 const book = {
-  imageLinks: {
-    thumbnail: 'http://books.google.com/books/content?id=nzJQAQAAIAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
-  },
   title: 'Travel',
   authors: ['Michael Crichton'],
   shelf: 'wantToRead',
