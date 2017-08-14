@@ -1,6 +1,4 @@
 ```jsx static
-const shelves = ['wantToRead', 'read'];
-
 const books = [
   {
     id: 1,
@@ -24,7 +22,6 @@ const onBookshelfChange = (book, prevShelf, newShelf) => {
 
 <BooksList
   status="ok"
-  shelves={shelves}
   books={books}
   onBookshelfChange={onBookshelfChange}
 />
