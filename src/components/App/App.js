@@ -12,7 +12,6 @@ import './App.css';
 /** The main app component containing the app state. */
 class App extends Component {
   state = {
-    shelves: BookShelfTitles.getAll(true).map(([shelf]) => shelf),
     books: [],
     status: ComponentStatuses.Loading,
   };
@@ -66,7 +65,7 @@ class App extends Component {
     this.updateBookshelf(book, prevShelf, newShelf);
 
   render() {
-    const { shelves, books, status } = this.state;
+    const { books, status } = this.state;
 
     return (
       <div className="app">
@@ -76,7 +75,6 @@ class App extends Component {
           render={() =>
             <BooksList
               status={status}
-              shelves={shelves}
               books={books}
               onBookshelfChange={this.handleBookshelfChange}
             />}

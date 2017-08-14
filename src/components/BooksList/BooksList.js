@@ -2,14 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import ComponentStatuses from '../../utils/ComponentStatuses';
 import Bookshelf from '../Bookshelf/Bookshelf';
 import Spinner from '../Spinner/Spinner';
 import './BooksList.css';
 
+const shelves = BookShelfTitles.getAll(true).map(([shelf]) => shelf);
+
 /** The component for the list of the shelves with the books. */
 const BooksList = props => {
-  const { status, shelves, books, onBookshelfChange } = props;
+  const { status, books, onBookshelfChange } = props;
 
   const getContent = () => {
     switch (status) {
@@ -58,8 +61,6 @@ const BooksList = props => {
 BooksList.propTypes = {
   /** The current status of the component */
   status: PropTypes.oneOf(Object.values(ComponentStatuses)).isRequired,
-  /** The list of the shelves. */
-  shelves: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** The list of the books. */
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
   /** The bookshelf change event's handler. */
