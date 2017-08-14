@@ -5,6 +5,7 @@ import * as BookShelfTitles from '../../utils/BookShelfTitles';
 import ComponentStatuses from '../../utils/ComponentStatuses';
 import Spinner from '../Spinner/Spinner';
 import './Book.css';
+import placeholder from './placeholder.jpg';
 
 const bookShelfTitles = BookShelfTitles.getAll();
 
@@ -18,7 +19,7 @@ class Book extends Component {
     /** The book's data. */
     book: PropTypes.shape({
       /** Links for the book's images. */
-      imageLinks: PropTypes.object.isRequired,
+      imageLinks: PropTypes.object,
       /** The book's title. */
       title: PropTypes.string.isRequired,
       /** The book's authors. */
@@ -45,7 +46,12 @@ class Book extends Component {
   }
 
   render() {
-    const { imageLinks, title, authors, shelf } = this.props.book;
+    const {
+      imageLinks = { thumbnail: placeholder },
+      title,
+      authors,
+      shelf,
+    } = this.props.book;
     const { status } = this.state;
 
     const getShelfChangerContent = () => {
